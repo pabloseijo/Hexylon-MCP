@@ -2,12 +2,16 @@ import socket
 import time
 
 
-class ScpiTimeoutError(Exception):
-    pass
+class ScpiClientError(Exception):
+    """Excepción base para errores del cliente SCPI."""
 
 
-class ScpiConnectionError(Exception):
-    pass
+class ScpiTimeoutError(ScpiClientError):
+    """Timeout esperando respuesta del Hexylon."""
+
+
+class ScpiConnectionError(ScpiClientError):
+    """Error de conexión TCP con el Hexylon."""
 
 
 def send_scpi_command_to_hexylon(
@@ -16,8 +20,10 @@ def send_scpi_command_to_hexylon(
     command: str,
     timeout: float = 5.0,
 ) -> str:
-    # IMPORTANTE: el comando debe terminar con un salto de línea para que el Hexylon lo procese
-    payload = (command + "\n").encode("ascii")
+    if not command or not command.strip():
+        raise ValueError("El comando SCPI no puede estar vacío.")
+
+    payload = (command.strip() + "\n").encode("ascii")
 
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -25,11 +31,8 @@ def send_scpi_command_to_hexylon(
             sock.connect((host, port))
 
             sock.sendall(payload)
-
-            # IMPORTANTE: cierre de escritura
             sock.shutdown(socket.SHUT_WR)
 
-            # pequeño retardo para permitir respuesta
             time.sleep(0.2)
 
             chunks = []
@@ -51,7 +54,7 @@ def send_scpi_command_to_hexylon(
         ) from exc
     except OSError as exc:
         raise ScpiConnectionError(
-            f"Error de conexión con Hexylon en {host}:{port} para el comando: {command}"
+            f"Error de conexión con Hexylon en {host}:{port}"
         ) from exc
 
     response = b"".join(chunks).decode("utf-8", errors="replace").strip()
