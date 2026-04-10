@@ -164,8 +164,9 @@ hexylon-mcp/
 │   └── config.py         # Configuración del sistema
 │
 ├── test/
-│   ├── test_scpi.py      # Pruebas del cliente SCPI
-│   └── test_mcp_local.py # Pruebas de la tool MCP
+│   ├── test_scpi.py       # Pruebas del cliente SCPI
+│   ├── test_mcp_local.py  # Pruebas locales de la tool MCP
+│   └── test_mcp_remote.py # Pruebas remotas del MCP mediante cliente externo
 │
 ├── scripts/
 │   ├── run_server.sh     # Arranque del servidor
