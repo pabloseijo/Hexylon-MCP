@@ -45,7 +45,7 @@ Para ejecutar este proyecto es necesario disponer de:
 Clonar el repositorio:
 
 ```bash
-git clone [<URL_DEL_REPOSITORIO>](https://github.com/pabloseijo/Hexylon-MCP.git)  
+git clone https://github.com/pabloseijo/Hexylon-MCP.git
 cd hexylon-mcp
 ```
 
