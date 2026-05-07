@@ -620,6 +620,8 @@ iptables -A FORWARD -p tcp -s 169.254.1.2 --sport 8814 -j ACCEPT
 iptables -t nat -A POSTROUTING -p tcp -d 169.254.1.2 --dport 8814 -j MASQUERADE
 ```
 
+> Nota: Como la placa de comandos es la que está expuesta al exterior, pero solo es un read-only filesystem, hay que hacerlo cada vez que se enciende el hexylon. 
+
 ### Arrancar el MCP en la placa Linux
 
 ```bash
